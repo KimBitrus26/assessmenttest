@@ -56,6 +56,8 @@ def add_item(request):
                             item_quantity=form.cleaned_data["item_quantity"],
 
                                 )
+                item_qty=ItemQuantity.objects.create(quantity=1)
+                item_qty.save()
                 
                 items.save()
                 messages.success(request, "Item added successfully")
