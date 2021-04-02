@@ -49,6 +49,7 @@ def add_item(request):
                         return redirect("/")
             else:
                 #if item is not in db, this will create item
+                
                 items = Item.objects.create(
                             title=form.cleaned_data["title"],
                             price=form.cleaned_data["price"],
@@ -56,6 +57,7 @@ def add_item(request):
                             item_quantity=form.cleaned_data["item_quantity"],
 
                                 )
+                #programmatic create the quantity object
                 item_qty=ItemQuantity.objects.create(quantity=1)
                 item_qty.save()
                 
