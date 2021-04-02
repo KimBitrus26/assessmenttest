@@ -21,15 +21,16 @@ def add_item(request):
     form = ItemForm()
     if request.method == "POST":
         form = ItemForm(request.POST)
-        item_data = Item.objects.all()
-        for item in item_data:
-            
-            #print(item.item_quantity.quantity)
-            if form.is_valid():
-            
+        
+        if form.is_valid():
+
+            item_data = Item.objects.all()
+            if item_data:
+                # loop if item is found in db
+                for item in item_data:       
                 #check items cannot be added more than 10
-                if item.item_quantity.quantity <= 10:   
-                    items = Item(
+                    if item.item_quantity.quantity <= 10:   
+                        items = Item.objects.create(
                             title=form.cleaned_data["title"],
                             price=form.cleaned_data["price"],
                             description=form.cleaned_data["description"],
@@ -37,15 +38,28 @@ def add_item(request):
 
                                 )
                 
-                    items.save()
-                    #increase qty by 1 for each item added
-                    item.item_quantity.quantity += 1
-                    item.item_quantity.save()
-                    messages.success(request, 'Item added successfully')
-                    return redirect("/")   
-                else:
-                    messages.info(request, "You cannot add more than 10 items, delete some..")
-                    return redirect("/")
+                        items.save()
+                        #increase qty by 1 for each item added
+                        item.item_quantity.quantity += 1
+                        item.item_quantity.save()
+                        messages.success(request, 'Item added successfully')
+                        return redirect("/")   
+                    else:
+                        messages.info(request, "You cannot add more than 10 items, delete some..")
+                        return redirect("/")
+            else:
+                #if item is not in db, this will create item
+                items = Item.objects.create(
+                            title=form.cleaned_data["title"],
+                            price=form.cleaned_data["price"],
+                            description=form.cleaned_data["description"],
+                            item_quantity=form.cleaned_data["item_quantity"],
+
+                                )
+                
+                items.save()
+                messages.success(request, "Item added successfully")
+                return redirect("/")
     return render(request, 'add_item.html', {"form":form})
     
     
