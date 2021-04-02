@@ -1,0 +1,72 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+ 
+   
+  <!--Main layout-->
+  <main>
+    <div class="container">
+
+        <div class="table-responsive">
+            <h2>Items</h2>
+             
+        
+            <table class="table">
+              <thead>
+                <tr>
+                    <th scope="col">S/N</th>
+                  <th scope="col">Item title</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">description</th>
+                  <th scope="col">Created date</th>
+                   <th scope="col"></th> 
+                   <th scope="col"></th> 
+                 
+                 
+                </tr>
+              </thead>
+
+              
+              
+              <tbody>
+                {% for item in item_data %} 
+                
+                <tr>
+                  <th scope="row">{{forloop.counter}}</th>
+                  <td>{{ item.title }}</td>
+                  <td>{{ item.price }}</td>
+                  <td> {{ item.description }} </td>
+                    <td> {{ item.date_created }} </td>   
+                    <td> 
+                      <a class="btn btn-primary float-right" href="{% url 'singnle_app:edit-item' item.id %}">Edit item</a>
+                  </td> 
+                    <td> 
+                      <a href="{% url 'singnle_app:delete-item' item.id %}">
+                        <i style="color: red;"class="fas fa-trash float-right"></i>
+                          </a>
+                    </td>            
+                  
+                </tr>
+                
+                     
+            {% endfor %}
+              </tbody>
+              
+               <tr>
+                <td colspan="7">
+                    <a class="btn btn-primary float-right" href="{% url 'singnle_app:add-item' %} ">Add item</a>
+                </td>
+            </tr>
+              
+            </table>
+          </div>
+      
+     
+    </div>
+  </main>
+  <!--Main layout-->
+
+  
+
+  {% endblock content %}
